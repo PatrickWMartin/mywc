@@ -18,9 +18,30 @@ func ParseCommandLineArgs(argsList []string) error {
 		GetFileSize(argsList[1])
     case "-l":
         GetFileLineCount(argsList[1])
+    case "-w":
+        GetWordCount(argsList[1])
     }
 
 	return nil
+}
+
+func GetWordCount(path string) error {
+
+    file, err := os.Open(path)
+    if err != nil {
+        return err
+    }
+
+    fileScanner := bufio.NewScanner(file)
+    fileScanner.Split(bufio.ScanWords)
+    wordCount := 0
+
+    for fileScanner.Scan() {
+        wordCount++
+    }
+
+    fmt.Println(wordCount, path)
+    return nil
 }
 
 func GetFileLineCount(path string) error {
