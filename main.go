@@ -1,30 +1,35 @@
 package main
 
 import (
-    "fmt"
-    "os"
-    "errors"
+	"errors"
+	"fmt"
+	"os"
 )
 
-func ParseCommandLineArgs(argsList []string) error{
+func ParseCommandLineArgs(argsList []string) error {
 
-    if len(argsList) == 0 {
-        return errors.New("no arguments provided")
-    }
+	if len(argsList) == 0 {
+		return errors.New("no arguments provided")
+	}
 
-    if argsList[0] == "-c"{
-        file, err := os.Stat(argsList[1]) 
-        if err != nil {
-            return err
-        }
+	if argsList[0] == "-c" {
+		GetFileSize(argsList[1])
+	}
 
-        fmt.Println(file.Size(), argsList[1])
-    }
+	return nil
+}
 
-    return nil
+func GetFileSize(path string) error {
+	file, err := os.Stat(path)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(file.Size(), path)
+	return nil
 }
 
 func main() {
-    commandArgs := os.Args[1:]
-    ParseCommandLineArgs(commandArgs)
+	commandArgs := os.Args[1:]
+	ParseCommandLineArgs(commandArgs)
 }
