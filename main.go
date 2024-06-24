@@ -20,13 +20,32 @@ func ParseCommandLineArgs(argsList []string) error {
         GetFileLineCount(argsList[1])
     case "-w":
         GetWordCount(argsList[1])
+    case "-m":
+        GetCharacterCount(argsList[1])
     }
 
 	return nil
 }
 
-func GetWordCount(path string) error {
+func GetCharacterCount(path string) error {
+    file, err := os.Open(path)
+    if err != nil {
+        return err
+    }
+    
+    fileScanner := bufio.NewScanner(file)
+    fileScanner.Split(bufio.ScanRunes)
+    charCount := 0
 
+    for fileScanner.Scan() {
+        charCount++
+    }
+
+    fmt.Println(charCount, path)
+    return nil
+}
+
+func GetWordCount(path string) error {
     file, err := os.Open(path)
     if err != nil {
         return err
