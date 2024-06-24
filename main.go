@@ -2,7 +2,9 @@ package main
 
 import (
     "fmt"
+    "os"
 )
 func main() {
-   fmt.Println("wc start") 
+    commandArgs := os.Args[1:]
+    fmt.Println(commandArgs) 
 }
