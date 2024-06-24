@@ -13,9 +13,10 @@ func ParseCommandLineArgs(argsList []string) error {
 		return errors.New("no arguments provided")
 	}
 
-	if argsList[0] == "-c" {
+    switch argsList[0] {
+    case "-c":
 		GetFileSize(argsList[1])
-	} else if argsList[0] == "-l"{
+    case "-l":
         GetFileLineCount(argsList[1])
     }
 
