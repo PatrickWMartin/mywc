@@ -12,16 +12,20 @@ func ParseCommandLineArgs(argsList []string) error {
 	if len(argsList) == 0 {
 		return errors.New("no arguments provided")
 	}
-
+    
     switch argsList[0] {
     case "-c":
-		GetFileSize(argsList[1])
+        fileSize := GetFileSize(argsList[1])
+        fmt.Println(fileSize, argsList[1])
     case "-l":
-        GetFileLineCount(argsList[1])
+        lineCount := GetFileLineCount(argsList[1])
+        fmt.Println(lineCount, argsList[1])
     case "-w":
-        GetWordCount(argsList[1])
+        wordCount := GetWordCount(argsList[1])
+        fmt.Println(wordCount, argsList[1])
     case "-m":
-        GetCharacterCount(argsList[1])
+        charCount := GetCharacterCount(argsList[1])
+        fmt.Println(charCount, argsList[1])
     }
 
 	return nil
@@ -55,7 +59,7 @@ func get_count(file os.File, split bufio.SplitFunc) int  {
     return count
 }
 
-func GetCharacterCount(path string) error {
+func GetCharacterCount(path string) int {
 
     file, closeFn := open_file(path)
     
@@ -63,40 +67,36 @@ func GetCharacterCount(path string) error {
     
     charCount := get_count(*file, bufio.ScanRunes)
 
-    fmt.Println(charCount, path)
-    return nil
+    return charCount
 }
 
-func GetWordCount(path string) error {
+func GetWordCount(path string) int {
     file, closeFn := open_file(path)
     
     defer closeFn()
     
     wordCount := get_count(*file, bufio.ScanWords)
 
-    fmt.Println(wordCount, path)
-    return nil
+    return wordCount
 }
 
-func GetFileLineCount(path string) error {
+func GetFileLineCount(path string) int {
     file, closeFn := open_file(path)
     
     defer closeFn()
     
     lineCount := get_count(*file, bufio.ScanLines)
 
-    fmt.Println(lineCount, path)
-    return nil
+    return lineCount
 }
 
-func GetFileSize(path string) error {
+func GetFileSize(path string) int64 {
 	file, err := os.Stat(path)
 	if err != nil {
-		return err
+        panic("Error getting file size")
 	}
 
-	fmt.Println(file.Size(), path)
-	return nil
+	return file.Size()
 }
 
 func main() {
