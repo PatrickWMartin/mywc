@@ -1,0 +1,23 @@
+#!/bin/bash
+echo "Running tests...."
+
+echo ""
+echo "testing -c flag..."
+wc -c test.txt
+./mywc -c test.txt
+
+echo ""
+echo "testing -l flag..."
+wc -l test.txt
+./mywc -l test.txt
+
+echo ""
+echo "testing -w flag..."
+wc -w test.txt
+./mywc -w test.txt
+
+echo ""
+echo "testing -m flag..."
+wc -m test.txt
+./mywc -m test.txt
+
