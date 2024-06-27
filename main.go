@@ -32,7 +32,8 @@ func GetCharacterCount(path string) error {
     if err != nil {
         return err
     }
-    
+    defer file.Close()
+
     fileScanner := bufio.NewScanner(file)
     fileScanner.Split(bufio.ScanRunes)
     charCount := 0
@@ -50,7 +51,8 @@ func GetWordCount(path string) error {
     if err != nil {
         return err
     }
-
+    defer file.Close()
+    
     fileScanner := bufio.NewScanner(file)
     fileScanner.Split(bufio.ScanWords)
     wordCount := 0
@@ -68,6 +70,7 @@ func GetFileLineCount(path string) error {
     if err != nil {
         return err
     }
+    defer file.Close()
 
     fileScanner := bufio.NewScanner(file)
     lineCount := 0
