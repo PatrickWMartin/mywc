@@ -1,27 +1,32 @@
 #!/bin/bash
+
+go build .
+
 echo "Running tests...."
 
 echo ""
 echo "testing -c flag..."
 wc -c test.txt
-go run main.go -c test.txt
+./mywc -c test.txt
 
 echo ""
 echo "testing -l flag..."
 wc -l test.txt
-go run main.go -l test.txt
+./mywc -l test.txt
 
 echo ""
 echo "testing -w flag..."
 wc -w test.txt
-go run main.go -w test.txt
+./mywc -w test.txt
 
 echo ""
 echo "testing -m flag..."
 wc -m test.txt
-go run main.go -m test.txt
+./mywc -m test.txt
 
 echo ""
 echo "testing no flag..."
 wc test.txt
-go run main.go test.txt
+./mywc test.txt
+
+rm mywc
