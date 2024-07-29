@@ -10,18 +10,18 @@ import (
 )
 
 func main() {
-	var printBytes, printLines, printWords, printChars bool
+	var options printOptions
 
-	flag.BoolVar(&printBytes, "c", false, "Count bytes")
-	flag.BoolVar(&printLines, "l", false, "Count lines")
-	flag.BoolVar(&printWords, "w", false, "Count words")
-	flag.BoolVar(&printChars, "m", false, "Count characters")
+	flag.BoolVar(&options.printBytes, "c", false, "Count bytes")
+	flag.BoolVar(&options.printLines, "l", false, "Count lines")
+	flag.BoolVar(&options.printWords, "w", false, "Count words")
+	flag.BoolVar(&options.printChars, "m", false, "Count characters")
 	flag.Parse()
 
-	if !printBytes && !printLines && !printWords && !printChars {
-		printBytes = true
-		printWords = true
-		printLines = true
+	if !options.printBytes && !options.printLines && !options.printWords && !options.printChars {
+		options.printBytes = true
+		options.printWords = true
+		options.printLines = true
 	}
 
 	files := flag.CommandLine.Args()
@@ -32,12 +32,21 @@ func main() {
 		}
 		printStats(bytes)
 	} else {
-		bytes, err := os.ReadFile("test.txt") // just pass the file name
-		if err != nil {
-			log.Fatal(err)
+		for _, file := range files {
+			bytes, err := os.ReadFile(file) // just pass the file name
+			if err != nil {
+				log.Fatal(err)
+			}
+			printStats(bytes)
 		}
-		printStats(bytes)
 	}
+}
+
+type printOptions struct {
+	printBytes bool
+	printLines bool
+	printWords bool
+	printChars bool
 }
 
 func countBytes(input []byte) int {
