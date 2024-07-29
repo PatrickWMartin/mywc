@@ -1,11 +1,12 @@
 package main
 
 import (
-	"fmt"
-	// "io"
-	// "os"
-	// "strings"
 	"flag"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"strings"
 )
 
 func main() {
@@ -24,22 +25,41 @@ func main() {
 	}
 
 	files := flag.CommandLine.Args()
-
-    fmt.Println(files) 
+	if len(files) == 0 {
+		bytes, err := io.ReadAll(os.Stdin)
+		if err != nil {
+			log.Fatal(err)
+		}
+		printStats(bytes)
+	} else {
+		bytes, err := os.ReadFile("test.txt") // just pass the file name
+		if err != nil {
+			log.Fatal(err)
+		}
+		printStats(bytes)
+	}
 }
 
-// func getBytes(input []byte) int {
-// 	return len(input)
-// }
-//
-// func getWords(input string) int {
-// 	return len(strings.Fields(input))
-// }
-//
-// func getChatacters(input string) int {
-// 	return len(strings.Split(input, ""))
-// }
-//
-// func getLines(input string) int {
-// 	return len(strings.Split(input, "\n")) - 1
-// }
+func countBytes(input []byte) int {
+	return len(input)
+}
+
+func countWords(input string) int {
+	return len(strings.Fields(input))
+}
+
+func countChatacters(input string) int {
+	return len(strings.Split(input, ""))
+}
+
+func countLines(input string) int {
+	return len(strings.Split(input, "\n")) - 1
+}
+
+func printStats(input []byte) {
+	fmt.Println(countBytes(input))
+	inputString := string(input)
+	fmt.Println(countWords(inputString))
+	fmt.Println(countChatacters(inputString))
+	fmt.Println(countLines(inputString))
+}
