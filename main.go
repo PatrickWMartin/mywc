@@ -2,51 +2,44 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"os"
-	"strings"
+	// "io"
+	// "os"
+	// "strings"
+	"flag"
 )
 
 func main() {
-	var bytes []byte
-	if checkStdIn() {
-		bytes, _ = io.ReadAll(os.Stdin)
-	} else {
-		bytes, _ = os.ReadFile("test.txt") // just pass the file name
+	var printBytes, printLines, printWords, printChars bool
+
+	flag.BoolVar(&printBytes, "c", false, "Count bytes")
+	flag.BoolVar(&printLines, "l", false, "Count lines")
+	flag.BoolVar(&printWords, "w", false, "Count words")
+	flag.BoolVar(&printChars, "m", false, "Count characters")
+	flag.Parse()
+
+	if !printBytes && !printLines && !printWords && !printChars {
+		printBytes = true
+		printWords = true
+		printLines = true
 	}
 
-	fmt.Println(getBytes(bytes))
-	input := string(bytes)
-	fmt.Println(getWords(input))
-	fmt.Println(getChatacters(input))
-	fmt.Println(getLines(input))
+	files := flag.CommandLine.Args()
+
+    fmt.Println(files) 
 }
 
-func checkStdIn() bool {
-	stat, err := os.Stdin.Stat()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error checking stdin:", err)
-		os.Exit(1)
-	}
-	if (stat.Mode() & os.ModeCharDevice) == 0 {
-		return true
-	}
-
-	return false
-}
-
-func getBytes(input []byte) int {
-	return len(input)
-}
-
-func getWords(input string) int {
-	return len(strings.Fields(input))
-}
-
-func getChatacters(input string) int {
-	return len(strings.Split(input, ""))
-}
-
-func getLines(input string) int {
-	return len(strings.Split(input, "\n")) - 1
-}
+// func getBytes(input []byte) int {
+// 	return len(input)
+// }
+//
+// func getWords(input string) int {
+// 	return len(strings.Fields(input))
+// }
+//
+// func getChatacters(input string) int {
+// 	return len(strings.Split(input, ""))
+// }
+//
+// func getLines(input string) int {
+// 	return len(strings.Split(input, "\n")) - 1
+// }
