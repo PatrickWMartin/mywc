@@ -30,14 +30,14 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		printStats(bytes)
+		printStats(bytes, options, "")
 	} else {
 		for _, file := range files {
 			bytes, err := os.ReadFile(file) // just pass the file name
 			if err != nil {
 				log.Fatal(err)
 			}
-			printStats(bytes)
+			printStats(bytes, options, file)
 		}
 	}
 }
@@ -57,7 +57,7 @@ func countWords(input string) int {
 	return len(strings.Fields(input))
 }
 
-func countChatacters(input string) int {
+func countCharacters(input string) int {
 	return len(strings.Split(input, ""))
 }
 
@@ -65,10 +65,25 @@ func countLines(input string) int {
 	return len(strings.Split(input, "\n")) - 1
 }
 
-func printStats(input []byte) {
-	fmt.Println(countBytes(input))
+func printStats(input []byte, options printOptions, fileName string) {
+	output := ""
 	inputString := string(input)
-	fmt.Println(countWords(inputString))
-	fmt.Println(countChatacters(inputString))
-	fmt.Println(countLines(inputString))
+
+	if options.printLines {
+		output += fmt.Sprint(countLines(inputString), " ")
+	}
+
+	if options.printWords {
+		output += fmt.Sprint(countWords(inputString), " ")
+	}
+
+	if options.printChars {
+		output += fmt.Sprint(countCharacters(inputString), " ")
+	}
+
+	if options.printBytes {
+		output += fmt.Sprint(countBytes(input), " ")
+	}
+
+	fmt.Println(output, fileName)
 }
