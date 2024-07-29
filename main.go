@@ -7,6 +7,21 @@ import (
 	"strings"
 )
 
+func main() {
+	var bytes []byte
+	if checkStdIn() {
+		bytes, _ = io.ReadAll(os.Stdin)
+	} else {
+		bytes, _ = os.ReadFile("test.txt") // just pass the file name
+	}
+
+	fmt.Println(getBytes(bytes))
+	input := string(bytes)
+	fmt.Println(getWords(input))
+	fmt.Println(getChatacters(input))
+	fmt.Println(getLines(input))
+}
+
 func checkStdIn() bool {
 	stat, err := os.Stdin.Stat()
 	if err != nil {
@@ -34,19 +49,4 @@ func getChatacters(input string) int {
 
 func getLines(input string) int {
 	return len(strings.Split(input, "\n")) - 1
-}
-
-func main() {
-	var bytes []byte
-	if checkStdIn() {
-		bytes, _ = io.ReadAll(os.Stdin)
-	} else {
-		bytes, _ = os.ReadFile("test.txt") // just pass the file name
-	}
-
-	fmt.Println(getBytes(bytes))
-	input := string(bytes)
-	fmt.Println(getWords(input))
-	fmt.Println(getChatacters(input))
-	fmt.Println(getLines(input))
 }
